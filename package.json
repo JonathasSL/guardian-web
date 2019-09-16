@@ -1,0 +1,9 @@
+{
+  "name": "guardian-web",
+  "version": "0.1.0",
+  "description": "Parking system.",
+  "main": "main.js",
+  "repository": "git@github.com:JonathasSL/guardian-web.git",
+  "author": "Bruno Marini <bruno.marini1@gmail.com>",
+  "license": "MIT"
+}
