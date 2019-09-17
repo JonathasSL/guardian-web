@@ -2,9 +2,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-// Pages
+// ~ Pages ~
 import Home from './views/Home.vue';
 
+// Use vue-router
 Vue.use(Router);
 
 // --- EXPORT ---
