@@ -1,9 +1,13 @@
+// --- IMPORTS ---
 import Vue from 'vue';
 import Router from 'vue-router';
+
+// Pages
 import Home from './views/Home.vue';
 
 Vue.use(Router);
 
+// --- EXPORT ---
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
