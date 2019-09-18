@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <Home></Home>
   </div>
 </template>
+
+<script>
+import Home from '@/views/Home.vue';
+
+export default {
+	name: 'app',
+	components: {
+		Home,
+	},
+};
+</script>
 
 <style>
 /* Change this import to the local font files */
@@ -20,16 +27,41 @@
   color: #303841;
 }
 
-#nav {
-  padding: 30px;
+/* --- GLOBALS --- */
+/* ~ Rounded ~ */
+._rounded-100 {
+  border-radius: 100px !important
+}
+._rounded {
+  border-radius: 10px !important
+}
+._rounded-tl {
+  border-top-left-radius: 10px !important
+}
+._rounded-tr {
+  border-top-right-radius: 10px !important
+}
+._rounded-bl {
+  border-bottom-left-radius: 10px !important
+}
+._rounded-br {
+  border-bottom-right-radius: 10px !important
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+/* ~ Squared ~ */
+._squared {
+  border-radius: 0 !important
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+._squared-tl {
+  border-top-left-radius: 0 !important
+}
+._squared-tr {
+  border-top-right-radius: 0 !important
+}
+._squared-bl {
+  border-bottom-left-radius: 0 !important
+}
+._squared-br {
+  border-bottom-right-radius: 0 !important
 }
 </style>
