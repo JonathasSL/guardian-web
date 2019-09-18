@@ -9,7 +9,7 @@
 					  <button @click="showVehicleList = true" type="button" class="cars btn _rounded-tl _rounded-bl ">
 							<img src="@/assets/icon/car.svg" alt="">
 						</button>
-						<button @click="showProfile = true" class="user btn px-4 _rounded-tr _rounded-br shadow-sm">
+						<button class="user btn px-4 _rounded-tr _rounded-br shadow-sm">
 							{{user.name}}
 						</button>
 					</div>
