@@ -4,14 +4,15 @@
 			X
 		</h1>
 		<form v-if="isLogin" class="form-login" @submit.prevent="login">
+			<p v-show="loginFailed" class="text-center text-danger"><b>E-mail ou senha incorretos :(</b></p>
 			<div class="form-row">
 		    <div class="form-group col-md-12">
 		      <label for="email">Email</label>
-		      <input v-model="form.login.email" type="email" class="form-control form-control-lg" id="email" placeholder="douglas@exemplo.com">
+		      <input v-model="form.login.email" type="email" required class="form-control form-control-lg" id="email" placeholder="douglas@exemplo.com">
 		    </div>
 		    <div class="form-group col-md-12">
 		      <label for="password">Senha</label>
-		      <input v-model="form.login.password" type="password" class="form-control form-control-lg" id="password" placeholder="******">
+		      <input v-model="form.login.password" type="password" required class="form-control form-control-lg" id="password" placeholder="******">
 		    </div>
   		</div>
 		  <button type="submit" class="btn btn-info btn-block btn-lg">Login</button>
@@ -19,16 +20,16 @@
 		<form v-else class="form-register" @submit.prevent="register">
 			<div class="form-group">
 				<label for="name">Nome</label>
-				<input v-model="form.register.name" type="text" class="form-control" id="name" placeholder="Douglas Adams da Silva Jr.">
+				<input v-model="form.register.name" type="text" required class="form-control" id="name" placeholder="Douglas Adams da Silva Jr.">
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="email">Email</label>
-					<input v-model="form.register.email" type="email" class="form-control" id="email" placeholder="douglas@exemplo.com">
+					<input v-model="form.register.email" type="email" required class="form-control" id="email" placeholder="douglas@exemplo.com">
 				</div>
 				<div class="form-group col-md-6">
 					<label for="password">Senha</label>
-					<input v-model="form.register.password" type="password" class="form-control" id="password" placeholder="******">
+					<input v-model="form.register.password" type="password" required class="form-control" id="password" placeholder="******">
 				</div>
 			</div>
 			<div class="form-row">
@@ -50,11 +51,18 @@
 </template>
 
 <script>
+// TODO: verify if has a away to do this import as global
+// Axios
+import axios from 'axios';
+// BUGFIX: same Vue CLI Service URL for CORS with Cue CLI proxy (look at "vue.config.js" file)
+axios.defaults.baseURL = 'http://localhost:4242';
+
 export default {
 	name: 'login',
 	data() {
 		return {
 			isLogin: true,
+			loginFailed: false,
 			form: {
 				login: {
 					email: null,
@@ -73,11 +81,33 @@ export default {
 		},
 
 		login () {
-			console.log(this.form.login)
+			axios.get('/api/driver')
+				.then(response => {
+					let drivers = response.data;
+
+					if (drivers.length > 0) {
+						let success = drivers.find(driver => {
+							return driver.email == this.form.login.email && driver.password == this.form.login.password
+						});
+
+						if (success) {
+							this.$emit('logged', success);
+							this.$emit('close');
+							this.$destroy();
+						} else {
+							this.loginFailed = true;
+						}
+					}
+				})
+				.catch(console.log)
 		},
 
 		register () {
-			console.log(this.form.register)
+			axios.post('/api/driver', this.form.register)
+				.then(response => {
+					console.log(response);
+				})
+				.catch(console.log)
 		},
 	}
 };
