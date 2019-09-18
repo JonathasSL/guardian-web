@@ -1,18 +1,24 @@
 <template>
   <div class="home vh-100 vw-100">
     <div class="d-flex h-100 w-100">
-      <SideNav></SideNav>
+      <!-- <SideNav></SideNav> -->
       <main class="h-100 w-100 bg-dark">
         <Logo class="logo m-2"></Logo>
 				<div class="right d-flex justify-content-center align-items-center m-2">
-					<button v-if="user" @click="showProfile = true" class="user btn px-4 _rounded shadow-sm">
-						{{user.name}}
-					</button>
-					<button @click="showLogin = true" class="login btn btn-dark px-4 ml-2 _rounded shadow-sm">Login</button>
+					<div v-if="user" class="btn-group _rounded shadow-sm" role="group">
+					  <button @click="showVehicleList = true" type="button" class="cars btn _rounded-tl _rounded-bl ">
+							<img src="@/assets/icon/car.svg" alt="">
+						</button>
+						<button class="user btn px-4 _rounded-tr _rounded-br shadow-sm">
+							{{user.name}}
+						</button>
+					</div>
+					<button @click="showLogin = true" class="login btn btn-dark px-4 ml-2 _rounded">Login</button>
 				</div>
       </main>
     </div>
     <Login @close="showLogin = false" @logged="logged" v-if="showLogin" class="login-container h-100 w-100"></Login>
+    <VehicleList @close="showVehicleList = false" v-if="showVehicleList" :userId="this.user.id" class="vehicle-list-container h-100 w-100"></VehicleList>
   </div>
 </template>
 
@@ -21,6 +27,7 @@
 import Logo from '@/components/Logo.vue';
 import SideNav from '@/components/SideNav.vue';
 import Login from '@/views/Login.vue';
+import VehicleList from '@/components/VehicleList.vue';
 
 export default {
   name: 'home',
@@ -28,11 +35,13 @@ export default {
     Logo,
     SideNav,
     Login,
+		VehicleList,
   },
   data() {
     return {
       showLogin: false,
-			showProfile: false,
+			showVehicleList: false,
+			showCars: false,
 			user: null,
     }
   },
@@ -40,6 +49,10 @@ export default {
 		logged(user) {
 			console.log("Usuário:", user)
 			this.user = user;
+		},
+
+		create() {
+
 		}
 	}
 };
@@ -50,6 +63,10 @@ export default {
   position: absolute;
   right: 0;
   top: 0
+}
+
+.cars {
+	background-color: #fff;
 }
 
 .user {
@@ -64,7 +81,7 @@ export default {
   left: 0
 }
 
-.login-container {
+.login-container, .vehicle-list-container {
   position: absolute;
   top: 0;
   left: 0;
