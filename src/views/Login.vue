@@ -39,7 +39,7 @@
 				</div>
 				<div class="form-group col-md-6">
 					<label for="phone">Telefone</label>
-					<input v-model.number="form.register.phone_number" type="number" class="form-control" id="phone" placeholder="42987654321">
+					<input v-model.number="form.register.phoneNumber" type="number" class="form-control" id="phone" placeholder="42987654321">
 				</div>
 			</div>
 			<button type="submit" class="btn btn-info btn-block btn-lg">Cadastrar</button>
