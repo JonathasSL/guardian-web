@@ -6,11 +6,17 @@
         <Logo class="logo m-2"></Logo>
 				<div class="right d-flex justify-content-center align-items-center m-2">
 					<div v-if="user" class="btn-group _rounded shadow-sm" role="group">
-					  <button @click="showVehicleList = true" type="button" class="cars btn _rounded-tl _rounded-bl ">
+					  <button title="Lista de Veículos" @click="showVehicleList = true" type="button" class="cars btn _rounded-tl _rounded-bl ">
 							<img src="@/assets/icon/car.svg" alt="">
 						</button>
-						<button class="user btn px-4 _rounded-tr _rounded-br shadow-sm">
+						<button title="Perfil" class="user btn px-4 shadow-sm _rounded-tr _rounded-br">
 							{{user.name}}
+						</button>
+						<button title="logout" @click="user = null" type="button" class="logout btn btn-dark _rounded ml-2">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+								<path fill="none" d="M0 0h24v24H0V0z"/>
+								<path fill="white" d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+							</svg>
 						</button>
 					</div>
 					<button @click="showLogin = true" v-if="!user" class="login btn btn-dark px-4 ml-2 _rounded">Login</button>
@@ -87,6 +93,16 @@ export default {
   left: 0;
   z-index: 99999999
 }
+
+.logout {
+	transition: .3s;
+}
+
+.logout:hover{
+	background-color: indianred;
+	border-color: indianred;
+}
+
 
 main {
   background-image: url('~@/assets/img/map.png');
