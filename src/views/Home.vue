@@ -13,7 +13,7 @@
 							{{user.name}}
 						</button>
 					</div>
-					<button @click="showLogin = true" class="login btn btn-dark px-4 ml-2 _rounded">Login</button>
+					<button @click="showLogin = true" v-if="!user" class="login btn btn-dark px-4 ml-2 _rounded">Login</button>
 				</div>
       </main>
     </div>
