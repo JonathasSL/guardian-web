@@ -6,8 +6,11 @@
         <Logo class="logo m-2"></Logo>
 				<div class="right d-flex justify-content-center align-items-center m-2">
 					<div v-if="user" class="btn-group _rounded shadow-sm" role="group">
-					  <button title="Lista de Veículos" @click="showVehicleList = true" type="button" class="cars btn _rounded-tl _rounded-bl ">
+					  <button v-if="user.type == 'driver'" title="Lista de Veículos" @click="showVehicleList = true" type="button" class="cars btn _rounded-tl _rounded-bl ">
 							<img src="@/assets/icon/car.svg" alt="">
+						</button>
+					  <button v-else title="Lista de Vagas" @click="showSpotList = true" type="button" class="btn btn-light _rounded-tl _rounded-bl ">
+							<img src="@/assets/icon/rectangles.svg" alt="">
 						</button>
 						<button title="Perfil" class="user btn px-4 shadow-sm _rounded-tr _rounded-br">
 							{{user.name}}
@@ -25,6 +28,7 @@
     </div>
     <Login @close="showLogin = false" @logged="logged" v-if="showLogin" class="login-container h-100 w-100"></Login>
     <VehicleList @close="showVehicleList = false" v-if="showVehicleList" :userId="this.user.id" class="vehicle-list-container h-100 w-100"></VehicleList>
+    <SpotList @close="showSpotList = false" v-if="showSpotList" :userId="this.user.id" class="vehicle-list-container h-100 w-100"></SpotList>
   </div>
 </template>
 
@@ -34,6 +38,7 @@ import Logo from '@/components/Logo.vue';
 import SideNav from '@/components/SideNav.vue';
 import Login from '@/views/Login.vue';
 import VehicleList from '@/components/VehicleList.vue';
+import SpotList from '@/components/SpotList.vue';
 
 export default {
   name: 'home',
@@ -42,18 +47,20 @@ export default {
     SideNav,
     Login,
 		VehicleList,
+		SpotList
   },
   data() {
     return {
       showLogin: false,
 			showVehicleList: false,
+			showSpotList: false,
 			showCars: false,
 			user: null,
     }
   },
 	methods: {
 		logged(user) {
-			console.log("Usuário:", user)
+			console.log("Usuário:", user);
 			this.user = user;
 		},
 
