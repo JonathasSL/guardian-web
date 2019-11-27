@@ -1,5 +1,5 @@
 <template lang="html">
-	<nav class="navbar sticky-top shadow navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar fixed-top shadow navbar-expand-lg navbar-light bg-light">
 	  <a class="navbar-brand" href="#">
 	  	<logo class="logo"></logo>
 	  </a>
@@ -27,7 +27,7 @@
 	    </ul>
 	  </div>
 
-		<div class="user p-2 _rounded-100">
+		<div @click="$emit('login')" class="user p-2 _rounded-100">
 			<user-icon size="2.3x" class="user-icon bg-dark text-white p-1 _rounded-100"></user-icon>
 			<span class="px-2 pr-0">Entrar / Cadastrar</span>
 		</div>
@@ -50,7 +50,7 @@ export default {
 
 <style lang="css" scoped>
 .navbar {
-	background-color: #eeeeee;
+	background-color: #eeeeee
 }
 
 .user {
