@@ -37,14 +37,6 @@
 				</button>
 			</div>
 			<hr>
-			<!-- <div class="row">
-				<div class="col-sm-12 col-md-6">
-					<div class="btn btn-info w-100">Motorista</div>
-				</div>
-				<div class="col-sm-12 col-md-6">
-					<div class="btn btn-outline-dark w-100">Estacionamento</div>
-				</div>
-			</div> -->
 			<form v-if="registerUserType" class="form-register-driver" @submit.prevent="register">
 				<div class="form-group">
 					<label for="name">Nome</label>
