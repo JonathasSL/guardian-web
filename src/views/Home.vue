@@ -3,7 +3,6 @@
     <div class="d-flex h-100 w-100">
       <!-- <SideNav></SideNav> -->
       <main class="h-100 w-100 bg-dark">
-        <Logo class="logo m-2"></Logo>
 				<div class="right d-flex justify-content-center align-items-center m-2">
 					<div v-if="user" class="btn-group _rounded shadow-sm" role="group">
 					  <button v-if="user.type == 'driver'" title="Lista de Veículos" @click="showVehicleList = true" type="button" class="cars btn _rounded-tl _rounded-bl ">
@@ -35,7 +34,6 @@
 <script>
 // @ is an alias to /src
 import Logo from '@/components/Logo.vue';
-import SideNav from '@/components/SideNav.vue';
 import Login from '@/views/Login.vue';
 import VehicleList from '@/components/VehicleList.vue';
 import SpotList from '@/components/SpotList.vue';
@@ -44,7 +42,6 @@ export default {
   name: 'home',
   components: {
     Logo,
-    SideNav,
     Login,
 		VehicleList,
 		SpotList
