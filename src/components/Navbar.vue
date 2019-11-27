@@ -1,17 +1,17 @@
 <template lang="html">
-	<div class="side-nav shadow">
+	<div class="navbar shadow">
 
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'side-nav',
+	name: 'navbar',
 }
 </script>
 
 <style lang="css" scoped>
-.side-nav {
+.navbar {
 	height: 100vh;
 	width: 70px;
 	background-color: #eeeeee;
