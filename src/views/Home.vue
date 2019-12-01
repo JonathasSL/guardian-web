@@ -61,26 +61,29 @@
 				</div>
 			</nav>
       <main class="h-100 w-100 bg-dark">
-				<div class="right d-flex justify-content-center align-items-center m-2">
-					<div v-if="user" class="btn-group _rounded shadow-sm" role="group">
-					  <button v-if="user.type == 'driver'" title="Lista de Veículos" @click="showVehicleList = true" type="button" class="cars btn _rounded-tl _rounded-bl ">
-							<img src="@/assets/icon/car.svg" alt="">
-						</button>
-					  <button v-else title="Lista de Vagas" @click="showSpotList = true" type="button" class="btn btn-light _rounded-tl _rounded-bl ">
-							<img src="@/assets/icon/rectangles.svg" alt="">
-						</button>
-						<button title="Perfil" class="user btn px-4 shadow-sm _rounded-tr _rounded-br">
-							{{user.name}}
-						</button>
-						<button title="logout" @click="user = null" type="button" class="logout btn btn-dark _rounded ml-2">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-								<path fill="none" d="M0 0h24v24H0V0z"/>
-								<path fill="white" d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
-							</svg>
-						</button>
-					</div>
-					<button @click="showLogin = true" v-if="!user" class="login btn btn-dark px-4 ml-2 _rounded">Login</button>
-				</div>
+				<GmapMap
+					ref="mapRef"
+				  :center="{lat: -19.9296346, lng:-43.9375731}"
+				  :zoom="15"
+				  map-type-id="roadmap"
+				  style="width: 100%; height: 100%"
+				>
+				  <GmapMarker
+				    :key="index"
+				    v-for="(m, index) in markers"
+				    :position="m.position"
+				    :clickable="true"
+				    :draggable="true"
+				    @click="center=m.position"
+				  />
+				</GmapMap>
+				<!-- <GmapInfoWindow
+					:key="index"
+					v-for="(i, index) in infos"
+					:position="i.position"
+					:content="i.content"
+				/> -->
+			</GmapMap>
       </main>
     </div>
     <Login @close="showLogin = false" @logged="logged" v-if="showLogin" class="login-container h-100 w-100"></Login>
@@ -105,6 +108,11 @@ import SpotList from '@/components/SpotList.vue';
 import Garage from '@/components/Garage.vue';
 import PriceTable from '@/components/PriceTable.vue';
 
+// Axios
+import axios from 'axios';
+// BUGFIX: same Vue CLI Service URL for CORS with Cue CLI proxy (look at "vue.config.js" file)
+axios.defaults.baseURL = 'http://localhost:4242';
+
 export default {
   name: 'home',
   components: {
@@ -117,6 +125,12 @@ export default {
 		Garage,
 		PriceTable,
   },
+	created () {
+		this.getMap().then(map => {
+			this.markers = map.markers;
+			this.infos = map.infos;
+		});
+	},
   data() {
     return {
       showLogin: false,
@@ -126,6 +140,15 @@ export default {
 			showPriceTable: false,
 			showCars: false,
 			user: null,
+			infos: [],
+			markers: [],
+			// markers: [{
+			// 	position: {
+			// 		lat: -19.9296346,
+			// 		lng: -43.9375731,
+			// 	}
+			// }]
+			// center: null,
     }
   },
 	methods: {
@@ -136,7 +159,40 @@ export default {
 
 		create() {
 
-		}
+		},
+
+		getMap () {
+			return axios.get('/api/parking')
+				.then(response => {
+					let parkings = response.data;
+					let markers = []
+					let infos = []
+					for (let parking of parkings) {
+						if (parking.latitude && parking.longitude) {
+							markers.push({
+								position: {
+									lat: parking.latitude,
+									lng: parking.longitude,
+								}
+							});
+							infos.push({
+								position: {
+									lat: parking.latitude,
+									lng: parking.longitude,
+								},
+								content: "OLA MUNDO"
+							});
+						}
+					}
+
+					return {
+						markers: markers,
+						infos: infos,
+					};
+				}).catch(e => {
+					console.log(e);
+				})
+		},
 	}
 };
 </script>
