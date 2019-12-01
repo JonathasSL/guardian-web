@@ -108,12 +108,12 @@ export default {
 		},
 
 		refresh() {
-			axios.get(`/api/parking_spot/parking/${this.userId}`)
+			axios.get(`/api/parking/${this.userId}/vehicles`)
 				.then(response => {
-					this.spots = response.data.filter(spot => {
-						return spot.idParking == this.userId;
-					});
-					console.log("Spots:", this.spots)
+					// this.spots = response.data.filter(spot => {
+					// 	return spot.idParking == this.userId;
+					// });
+					console.log("Spots:", response.data)
 				})
 				.catch(console.log)
 		},
