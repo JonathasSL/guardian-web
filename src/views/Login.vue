@@ -89,6 +89,16 @@
 						<input v-model.number="formRegister.parking.phoneNumber" type="number" class="form-control" id="phone" placeholder="42987654321">
 					</div>
 				</div>
+				<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="lat">Latitude</label>
+					<input v-model.number="formRegister.parking.latitude" type="text" class="form-control" id="lat" placeholder="12345678900">
+				</div>
+				<div class="form-group col-md-6">
+					<label for="long">Longitude</label>
+					<input v-model.number="formRegister.parking.longitude" type="text" class="form-control" id="long" placeholder="42987654321">
+				</div>
+			</div>
 				<button type="submit" class="btn btn-block btn-lg" :class="registerUserType ? 'btn-info' : 'btn-dark'">Cadastrar</button>
 			</form>
 		</div>
