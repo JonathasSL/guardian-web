@@ -8,42 +8,100 @@
 			<div class="form-row">
 		    <div class="form-group col-md-12">
 		      <label for="email">Email</label>
-		      <input v-model="form.login.email" type="email" required class="form-control form-control-lg" id="email" placeholder="douglas@exemplo.com">
+		      <input v-model="formLogin.email" type="email" required class="form-control form-control-lg" id="email" placeholder="douglas@exemplo.com">
 		    </div>
 		    <div class="form-group col-md-12">
 		      <label for="password">Senha</label>
-		      <input v-model="form.login.password" type="password" required class="form-control form-control-lg" id="password" placeholder="******">
+		      <input v-model="formLogin.password" type="password" required class="form-control form-control-lg" id="password" placeholder="******">
 		    </div>
   		</div>
 		  <button type="submit" class="btn btn-info btn-block btn-lg">Login</button>
 		</form>
-		<form v-else class="form-register" @submit.prevent="register">
-			<div class="form-group">
-				<label for="name">Nome</label>
-				<input v-model="form.register.name" type="text" required class="form-control" id="name" placeholder="Douglas Adams da Silva Jr.">
+		<div v-else>
+			<div class="btn-group _rounded shadow-sm w-100" role="group">
+				<button title="Motorista" @click="registerUserType = true" type="button" class="w-50 btn btn-info d-flex justify-content-center align-items-center  _rounded-tl _rounded-bl">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+						<path fill="none" d="M0 0h24v24H0V0z"/>
+						<path fill="#fff" d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.08 3.11H5.77L6.85 7zM19 17H5v-5h14v5z"/>
+						<circle fill="#fff" cx="7.5" cy="14.5" r="1.5"/>
+						<circle fill="#fff" cx="16.5" cy="14.5" r="1.5"/>
+					</svg>
+					<span class="ml-2">Motorista</span>
+				</button>
+				<button title="Estacionamento" @click="registerUserType = false" type="button" class="w-50 btn btn-dark d-flex justify-content-center align-items-center _rounded-tr _rounded-br">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+						<path fill="none" d="M0 0h24v24H0V0z"/>
+						<path fill="white" d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+					</svg>
+					<span class="ml-2">Estacionamento</span>
+				</button>
 			</div>
-			<div class="form-row">
+			<hr>
+			<form v-if="registerUserType" class="form-register-driver" @submit.prevent="register">
+				<div class="form-group">
+					<label for="name">Nome</label>
+					<input v-model="formRegister.driver.name" type="text" required class="form-control" id="name" placeholder="Douglas Adams da Silva Jr.">
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="email">Email</label>
+						<input v-model="formRegister.driver.email" type="email" required class="form-control" id="email" placeholder="douglas@exemplo.com">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="password">Senha</label>
+						<input v-model="formRegister.driver.password" type="password" required class="form-control" id="password" placeholder="******">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="cpf">CPF</label>
+						<input v-model.number="formRegister.driver.cpf" type="number" class="form-control" id="cpf" placeholder="12345678900">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="phone">Telefone</label>
+						<input v-model.number="formRegister.driver.phoneNumber" type="number" class="form-control" id="phone" placeholder="42987654321">
+					</div>
+				</div>
+				<button type="submit" class="btn btn-info btn-block btn-lg">Cadastrar</button>
+			</form>
+			<form v-else class="form-register-parking" @submit.prevent="register">
+				<div class="form-group">
+					<label for="name">Nome</label>
+					<input v-model="formRegister.parking.name" type="text" required class="form-control" id="name" placeholder="EstacionAí">
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="email">Email</label>
+						<input v-model="formRegister.parking.email" type="email" required class="form-control" id="email" placeholder="estacionai@exemplo.com">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="password">Senha</label>
+						<input v-model="formRegister.parking.password" type="password" required class="form-control" id="password" placeholder="******">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="cpf">CNPJ</label>
+						<input v-model.number="formRegister.parking.cnpj" type="number" class="form-control" id="cpf" placeholder="12345678900">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="phone">Telefone</label>
+						<input v-model.number="formRegister.parking.phoneNumber" type="number" class="form-control" id="phone" placeholder="42987654321">
+					</div>
+				</div>
+				<div class="form-row">
 				<div class="form-group col-md-6">
-					<label for="email">Email</label>
-					<input v-model="form.register.email" type="email" required class="form-control" id="email" placeholder="douglas@exemplo.com">
+					<label for="lat">Latitude</label>
+					<input v-model.number="formRegister.parking.latitude" type="text" class="form-control" id="lat" placeholder="12345678900">
 				</div>
 				<div class="form-group col-md-6">
-					<label for="password">Senha</label>
-					<input v-model="form.register.password" type="password" required class="form-control" id="password" placeholder="******">
+					<label for="long">Longitude</label>
+					<input v-model.number="formRegister.parking.longitude" type="text" class="form-control" id="long" placeholder="42987654321">
 				</div>
 			</div>
-			<div class="form-row">
-				<div class="form-group col-md-6">
-					<label for="cpf">CPF</label>
-					<input v-model.number="form.register.cpf" type="number" class="form-control" id="cpf" placeholder="12345678900">
-				</div>
-				<div class="form-group col-md-6">
-					<label for="phone">Telefone</label>
-					<input v-model.number="form.register.phone_number" type="number" class="form-control" id="phone" placeholder="42987654321">
-				</div>
-			</div>
-			<button type="submit" class="btn btn-info btn-block btn-lg">Cadastrar</button>
-		</form>
+				<button type="submit" class="btn btn-block btn-lg" :class="registerUserType ? 'btn-info' : 'btn-dark'">Cadastrar</button>
+			</form>
+		</div>
 		<button type="button" class="btn btn-link mt-4" @click="isLogin = !isLogin">
 			{{isLogin ? 'Ainda não possuo cadastro' : 'Já possuo cadastro'}}
 		</button>
@@ -63,15 +121,11 @@ export default {
 		return {
 			isLogin: true,
 			loginFailed: false,
-			form: {
-				login: {
-					email: null,
-					password: null
-				},
-				register: {
-					email: null,
-					password: null
-				},
+			registerUserType: true,
+			formLogin: {},
+			formRegister: {
+				driver: {},
+				parking: {},
 			},
 		}
 	},
@@ -80,34 +134,45 @@ export default {
 			this.$emit('close');
 		},
 
-		login () {
-			axios.get('/api/driver')
+		async login () {
+			let user;
+
+			// TODO: remove 404 console message
+			await axios.post('/api/driver/login', this.formLogin)
 				.then(response => {
-					let drivers = response.data;
-
-					if (drivers.length > 0) {
-						let success = drivers.find(driver => {
-							return driver.email == this.form.login.email && driver.password == this.form.login.password
-						});
-
-						if (success) {
-							this.$emit('logged', success);
-							this.$emit('close');
-							this.$destroy();
-						} else {
+					user = response.data;
+					user.type = "driver";
+				}).catch(async (e) => {
+					await axios.post('/api/parking/login', this.formLogin)
+						.then(response => {
+							user = response.data;
+							user.type = "parking";
+						}).catch(e => {
 							this.loginFailed = true;
-						}
-					}
+						})
 				})
-				.catch(console.log)
+
+			if (user) {
+				this.$emit('logged', user);
+				this.$emit('close');
+				this.$destroy();
+			}
 		},
 
 		register () {
-			axios.post('/api/driver', this.form.register)
-				.then(response => {
-					console.log(response);
-				})
-				.catch(console.log)
+			if (this.registerUserType) {
+				axios.post('/api/driver', this.formRegister.driver)
+					.then(response => {
+						console.log(response);
+					})
+					.catch(console.log)
+			} else {
+				axios.post('/api/parking', this.formRegister.parking)
+					.then(response => {
+						console.log(response);
+					})
+					.catch(console.log)
+			}
 		},
 	}
 };

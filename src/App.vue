@@ -6,7 +6,7 @@
 
 <script>
 export default {
-	name: 'app'
+	name: 'app',
 };
 </script>
 
@@ -20,6 +20,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 
   color: #303841;
+	min-height: 100vh;
 }
 
 /* --- GLOBALS --- */

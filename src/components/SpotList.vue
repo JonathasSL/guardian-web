@@ -1,31 +1,29 @@
 <template lang="html">
-	<div class="vehicle-list h-100 w-100 d-flex flex-column justify-content-center align-items-center">
+	<div class="spot-list h-100 w-100 d-flex flex-column justify-content-center align-items-center">
+		<h1 class="text-black mb-4"><b>Lista de Vagas</b></h1>
 		<h1 class="exit mb-0 mt-3 mr-4" @click="close">
 			X
 		</h1>
-		<form class="form-create" @submit.prevent="create">
+		<form class="form-create w-50" @submit.prevent="create">
 			<div class="form-row">
-				<div class="form-group col-md-6">
-					<label for="plate">Placa</label>
-					<input v-model="vehicle.plate" type="text" required class="form-control" id="plate" placeholder="ABC-1234">
+				<div class="form-group col-md-2">
+					<label for="plate">Quantidade</label>
+					<input v-model="spot.ammount" type="number" required class="form-control" id="ammount" placeholder="-" min="1">
 				</div>
-				<div class="form-group col-md-6">
-					<label for="type">Tipo de Veículo</label>
-					<select v-model="vehicle.idVehicleType" required class="custom-select" id="type">
+				<div class="form-group col-md-5">
+					<label for="type">Tipo de Vaga</label>
+					<select v-model="spot.idVehicleType" required class="custom-select" id="type">
 						<option value="-1" selected disabled>Selecione um tipo</option>
 						<option value="0">Carro</option>
 						<option value="1">Moto</option>
 					</select>
 				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group col-md-6">
-					<label for="make">Fabricante</label>
-					<input v-model="vehicle.make" type="text" required class="form-control" id="make" placeholder="Tabajara">
-				</div>
-				<div class="form-group col-md-6">
-					<label for="model">Modelo</label>
-					<input v-model="vehicle.model" type="text" required class="form-control" id="model" placeholder="Monster 1.0 2016">
+				<div class="form-group col-md-5">
+					<label for="type">Status</label>
+					<select v-model="spot.idStatus" required class="custom-select" id="type">
+						<option value="-1" disabled>Selecione um status</option>
+						<option v-for="(status, index) in statusList" :key="status.id" :value="status.id" :selected="status.name == 'Disponivel'">{{status.name}}</option>
+					</select>
 				</div>
 			</div>
 			<button type="submit" class="btn btn-info btn-block btn-lg">Cadastrar</button>
@@ -36,12 +34,11 @@
       selectable
       :select-mode="selectMode"
       selected-variant="success"
-      :items="vehiclesTable"
+      :items="spotsTable"
       @row-selected="onRowSelected"
       responsive="sm"
-			class="mt-4"
+			class="mt-4 w-50"
     >
-      <!-- Example scoped slot for select state illustrative purposes -->
       <template v-slot:cell(selected)="{ rowSelected }">
         <template v-if="rowSelected">
           <span aria-hidden="true">&check;</span>
@@ -65,7 +62,7 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:4242';
 
 export default {
-	name: 'login',
+	name: 'SpotList',
 	props: {
 		userId: {
 			type: Number,
@@ -74,30 +71,30 @@ export default {
 	},
 	data() {
 		return {
-			vehicles: [],
+			spots: [],
 			ids: [],
-			vehicle: {
-				idDriver: this.userId,
-				plate: null,
-				idVehicleType: -1,
-				make: null,
-				model: null
+			statusList: [],
+			spot: {
+				idParking: this.userId,
+				idVehicleType: null,
+				idStatus: null,
+				ammount: null
 			},
 		 selectMode: 'multi',
 		 selected: []
 		}
 	},
 	computed: {
-		vehiclesTable() {
+		spotsTable() {
 			let table = [];
-			for (let vehicle of this.vehicles) {
+			for (let spot of this.spots) {
 				table.push({
-					Placa: vehicle.plate,
-					'Tipo de Veículo': vehicle.id_vehicle_type === 0 ? 'Carro' : 'Moto',
-					Fabricante: vehicle.make,
-					Modelo: vehicle.model,
+					ID: spot.id,
+					Nome: spot.name,
+					'Tipo de Veículo': spot.idVehicleType === 0 ? 'Carro' : 'Moto',
+					Status: this.statusList.find(status => status.id == spot.idStatus).name
 				});
-				this.ids.push(vehicle.id)
+				this.ids.push(spot.id)
 			}
 
 			console.log(table)
@@ -110,28 +107,31 @@ export default {
 		},
 
 		refresh() {
-			axios.get('/api/vehicle')
+			axios.get('/api/parking_spot')
 				.then(response => {
-					this.vehicles = response.data.filter(vehicle => {
-						return vehicle.idDriver == this.userId;
-					});;
-
-					console.log(response)
+					this.spots = response.data.filter(spot => {
+						return spot.idParking == this.userId;
+					});
+					console.log("Spots:", this.spots)
 				})
 				.catch(console.log)
 		},
 
 		create() {
-			axios.post('/api/vehicle', this.vehicle)
+			console.log(this.spot)
+
+			this.refresh();
+
+			axios.post('/api/parking_spot', this.spot)
 				.then(response => {
 					console.log(response);
+					this.spot = {
+						idParking: this.userId,
+						idVehicleType: null,
+						idStatus: null,
+						ammount: null
+					};
 					this.refresh();
-					this.vehicle = {
-						plate: null,
-						vehicle_type: -1,
-						make: null,
-						model: null
-					}
 				})
 				.catch(console.log)
 		},
@@ -142,12 +142,21 @@ export default {
 			console.log("Selecteds:", this.selected)
 
 			for (let selected of this.selected) {
-				trashList.push(this.vehicles.find(vehicle => {
-					console.log("vehicle", vehicle);
-					console.log("selected", selected);
-					return vehicle.plate == selected.placa;
+				trashList.push(this.spots.find(spot => {
+					return spot.id == selected.ID;
 				}))
 			}
+
+			for (let trash of trashList) {
+				axios.delete(`/api/parking_spot/${trash.id}`)
+					.then(response => {
+						console.log("Delete:", response);
+						this.refresh();
+					})
+					.catch(console.log)
+			}
+
+
 
 			// for (let id of this.ids) {
 			// 	this.vehicles.find(vehicle => {
@@ -178,13 +187,20 @@ export default {
     },
 	},
 	created() {
+		// Status list
+		axios.get('/api/status')
+			.then(response => {
+				this.statusList = response.data;
+			})
+			.catch(console.log)
+
 		this.refresh();
 	}
 }
 </script>
 
 <style lang="css" scoped>
-.vehicle-list {
+.spot-list {
 	background-color: #fff;
 }
 
